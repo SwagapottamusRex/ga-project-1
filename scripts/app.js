@@ -1,5 +1,12 @@
 /* eslint-disable no-undef */
 //Select the Divs from the HTML
+const playGame = document.getElementById('playGame')
+const reset = document.getElementById('reset')
+const howToPlay = document.getElementById('howToPlay')
+
+playGame.addEventListener('click', playGameFunction)
+reset.addEventListener('click', resetFunction)
+howToPlay.addEventListener('click', howToPlayFunction)
 
 const grid = document.querySelector('.grid')
 
@@ -191,9 +198,10 @@ function checkered () {
 }
 checkered()
 
-
 const img = document.createElement('img')
 const queenImg = document.createElement('img')
+const kingImg = document.createElement('img')
+const blackKingImg = document.createElement('img')
 
 //Create a function to add the Pawn image to the cell
 function addPawnImg(arrayNumber) {
@@ -207,7 +215,9 @@ function addPawnImg(arrayNumber) {
   }
 }
 
+  
 const randomPawnNum = (Math.floor((Math.random() * 8) + 98))
+let newPawnNum = 0
 
 addPawnImg(randomPawnNum);
 
@@ -224,10 +234,10 @@ pawnImage.addEventListener('dragstart', function (event) {
   oneSquareAhead = document.getElementById((parseInt(event.target.parentElement.id) - 12))
   
   // if (oneSquareAhead.classList === '')
+  startingPawnPosition =  event.target.parentElement
   
-  pawnDragged = event.target
-
-  if (parseInt(event.target.parentElement.id) === randomPawnNum) {
+  if (parseInt(event.target.parentElement.id) === randomPawnNum || parseInt(event.target.parentElement.id) === newPawnNum ) {
+    
     
     twoSquaresAhead.style.opacity = 0.5
     oneSquareAhead.style.opacity = 0.5    
@@ -235,7 +245,6 @@ pawnImage.addEventListener('dragstart', function (event) {
     oneSquareAhead.classList.add('pawnDropzone')
   } else if (parseInt(event.target.parentElement.id) <= 45 && (parseInt(event.target.parentElement.id) >= 38)) {
     oneSquareAhead.style.opacity = 0.5
-    oneSquareAhead.style.backgroundColor = 'red'
     oneSquareAhead.classList.add('pawnDropzone')
   } else {
     event.target.style.opacity = .5;
@@ -243,25 +252,30 @@ pawnImage.addEventListener('dragstart', function (event) {
     oneSquareAhead.style.opacity = 0.5
   }
   dragged = event.target;
+  
   event.target.parentElement.classList.remove('whitePawn')
   setTimeout(() => event.target.className = 'hidden', 0);
 }, false);
 
 pawnImage.addEventListener('dragend', function (event) {
   
-  if (parseInt(event.target.id) <= 33 && parseInt(event.target.id) >= 26 ) {
-    event.target.parentElement.classList.add('whiteQueen')
-  } else {
-
-    event.target.parentElement.classList.add('whitePawn')
-    twoSquaresAhead.classList.remove('pawnDropzone')
-    oneSquareAhead.classList.remove('pawnDropzone')
-    twoSquaresAhead.style.opacity = 1;
-    oneSquareAhead.style.opacity = 1;
-    event.target.classList.remove('hidden')
-    dragged.style.opacity = 1
-  }
   
+  event.target.parentElement.classList.add('whitePawn')
+  twoSquaresAhead.classList.remove('pawnDropzone')
+  oneSquareAhead.classList.remove('pawnDropzone')
+  twoSquaresAhead.style.opacity = 1;
+  oneSquareAhead.style.opacity = 1;
+  event.target.classList.remove('hidden')
+  dragged.style.opacity = 1
+  
+  if (startingPawnPosition === event.target.parentElement) {
+    return
+  } else if (pawnImage.draggable === true) {
+    blackKing.draggable = true
+    whiteKing.draggable = false
+    pawnImage.draggable = false
+  }
+
 }, false);
 
 document.addEventListener('dragover', function (event) {
@@ -296,6 +310,11 @@ document.addEventListener('drop', function (event) {
     dragged.parentNode.removeChild(dragged)
     event.target.appendChild(queenImg)
     event.target.classList.add('whiteQueen')
+    
+    //if the white king isnt in bordering cells when promoting then its a draw because black king can capture.
+    
+    
+    window.alert('You Win!')
   } else if (event.target.className === 'playingTile pawnDropzone') {
     event.target.style.opacity = '';
     event.target.style.border = '';
@@ -306,6 +325,8 @@ document.addEventListener('drop', function (event) {
     oneSquareAhead.classList.remove('pawnDropzone')
     twoSquaresAhead.classList.remove('pawnDropzone')
   }
+
+  thisWherePawnShouldBe = event.target
 }, false);
 
 
@@ -313,9 +334,9 @@ document.addEventListener('drop', function (event) {
 ///Create the WHITE KING!
 
 
-const kingImg = document.createElement('img')
+  
 let whiteKingAvailableSquaresArray = []
-//put king into a div
+// put king into a div
 function createKing(arrayNumber) {
   kingImg.src = './sprites/white-king.png'
   kingImg.className = 'image'
@@ -332,7 +353,7 @@ let whiteKing = document.getElementById('whiteKing')
 
 whiteKing.addEventListener('dragstart', function(event) {
 
-  const currentWhiteKingPosition = parseInt(event.target.parentElement.id)
+  currentWhiteKingPosition = parseInt(event.target.parentElement.id)
   
   whiteKingAvailableSquaresArray[0] = cells[currentWhiteKingPosition - 12]
   whiteKingAvailableSquaresArray[1] = cells[currentWhiteKingPosition - 11]
@@ -453,6 +474,8 @@ whiteKing.addEventListener('dragstart', function(event) {
   
 }, false)
 
+const newWhiteKingAvailableSquaresArray = []
+
 whiteKing.addEventListener('dragend', function(event) {
   whiteKingAvailableSquaresArray.forEach(element => {
     element.classList.remove('whiteKingDropZone')
@@ -463,9 +486,34 @@ whiteKing.addEventListener('dragend', function(event) {
   if (event.target.parentElement.classList.value === 'playingTile') {
     thisIsWhereKingShouldBe.classList.add('whiteKing')
     kingDragged.classList.remove('whiteKing')
-    
+
   }
-  
+
+  if (parseInt(whiteKing.parentElement.id) === parseInt(thisIsWhereKingShouldBe.parentElement.id)) {
+    return
+  } else if (thisIsWhereKingShouldBe !== event.target.parentElement) {
+    return
+  } else if (whiteKing.draggable === true) {
+    blackKing.draggable = true
+    whiteKing.draggable = false
+    pawnImage.draggable = false
+  }
+ 
+  const newCurrentWhiteKingPosition = parseInt(event.target.parentElement.id)
+
+  newWhiteKingAvailableSquaresArray[0] = cells[newCurrentWhiteKingPosition - 12]
+  newWhiteKingAvailableSquaresArray[1] = cells[newCurrentWhiteKingPosition - 11]
+  newWhiteKingAvailableSquaresArray[2] = cells[newCurrentWhiteKingPosition + 1]
+  newWhiteKingAvailableSquaresArray[3] = cells[newCurrentWhiteKingPosition + 13]
+  newWhiteKingAvailableSquaresArray[4] = cells[newCurrentWhiteKingPosition + 12]
+  newWhiteKingAvailableSquaresArray[5] = cells[newCurrentWhiteKingPosition + 11]
+  newWhiteKingAvailableSquaresArray[6] = cells[newCurrentWhiteKingPosition - 1]
+  newWhiteKingAvailableSquaresArray[7] = cells[newCurrentWhiteKingPosition - 13]
+
+
+
+
+
 }, false);
 
 document.addEventListener('dragenter', function(event) {
@@ -509,8 +557,6 @@ document.addEventListener('drop', function (event) {
 
 //Make the BLACK KING
 
-const blackKingImg = document.createElement('img')
-
 function createBlackKing(arrayNumber) {
   blackKingImg.src = './sprites/black-king.png'
   blackKingImg.className = 'image'
@@ -526,7 +572,7 @@ const blackKingAvailableSquaresArray = []
 let blackKing = document.getElementById('blackKing')
 
 blackKing.addEventListener('dragstart', function (event) {
-  blackKingDragged = event.target;
+  
 
   const currentBlackKingPosition = parseInt(event.target.parentElement.id)
   pawnCheckLeft = pawnImage.parentElement.id - 13
@@ -543,6 +589,7 @@ blackKing.addEventListener('dragstart', function (event) {
   blackKingAvailableSquaresArray[6] = cells[currentBlackKingPosition - 1]
   blackKingAvailableSquaresArray[7] = cells[currentBlackKingPosition - 13]
 
+  console.log(blackKingAvailableSquaresArray)
   
 
   const topTop = parseInt(blackKingAvailableSquaresArray[0].id) - 12
@@ -561,6 +608,8 @@ blackKing.addEventListener('dragstart', function (event) {
   const leftMidTop = parseInt(blackKingAvailableSquaresArray[7].id) - 1
   const topLeft = parseInt(blackKingAvailableSquaresArray[7].id) - 13
   const topMidLeft = parseInt(blackKingAvailableSquaresArray[7].id) - 12
+
+  console.log(topTop)
 
   blackKingAvailableSquaresArray.forEach(element => {
     if (element.className === 'playingTile' || element.className === 'playingTile whitePawn') {
@@ -660,22 +709,53 @@ blackKing.addEventListener('dragend', function (event) {
     element.classList.remove('blackKingDropZone')
     element.style.opacity = ''
     element.classList.remove('blackKing')
-    // console.log(topMidLeft)
-    if (thisIsWhereKingShouldBe.parentElement.classList.value === 'playingTile whitePawn') {
-      console.log('yo')
-      
-    }
+    
   })
+  
   
   if (event.target.parentElement.classList.value === 'playingTile') {
     thisIsWhereKingShouldBe.classList.add('blackKing')
     blackKingDragged.classList.remove('blackKing')
   }
-  console.log(event.target.parentElement)
-  // console.log(blackKing.parentElement)
-  // console.log(thisIsWhereKingShouldBe.parentElement.classList.value)
+  
   cells[pawnCheckLeft].classList.remove('pawnCheck')
   cells[pawnCheckRight].classList.remove('pawnCheck')
+  
+  // if (newWhiteKingAvailableSquaresArray[0].classList.value === 'playingTile whitePawn') {
+
+  // } else if (newWhiteKingAvailableSquaresArray[1].classList.value === 'playingTile whitePawn') {
+    
+  // } else if (newWhiteKingAvailableSquaresArray[2].classList.value === 'playingTile whitePawn') {
+
+  // } else if (newWhiteKingAvailableSquaresArray[3].classList.value === 'playingTile whitePawn') {
+
+  // } else if (newWhiteKingAvailableSquaresArray[4].classList.value === 'playingTile whitePawn') {
+
+  // } else if (newWhiteKingAvailableSquaresArray[5].classList.value === 'playingTile whitePawn') {
+
+  // } else if (newWhiteKingAvailableSquaresArray[6].classList.value === 'playingTile whitePawn') {
+
+  // } else if (newWhiteKingAvailableSquaresArray[7].classList.value === 'playingTile whitePawn') {
+
+  // } else 
+  
+  console.log(newWhiteKingAvailableSquaresArray)
+
+  if (thisIsWhereBlackKingShouldBe.parentElement.classList.value === 'playingTile whitePawn'){
+    pawnImage.remove()
+    window.alert('Game is a draw!')
+  }
+  
+  if (parseInt(blackKing.parentElement.id) === parseInt(thisIsWhereKingShouldBe.parentElement.id)) {
+    return
+  } else if (thisIsWhereKingShouldBe !== event.target.parentElement) {
+    return
+  } else if (blackKing.draggable === true){
+    blackKing.draggable = false
+    whiteKing.draggable = true
+    pawnImage.draggable = true
+  }
+  whereBlackKingEndsUp = event.target.parentElement
 }, false);
 
 document.addEventListener('dragenter', function (event) {
@@ -710,19 +790,27 @@ document.addEventListener('drop', function (event) {
 
 ///Set Game Up.
 
-const playGame = document.getElementById('playGame')
-const reset = document.getElementById('reset')
-const howToPlay = document.getElementById('howToPlay')
-
-playGame.addEventListener('click', playGameFunction)
-reset.addEventListener('click', resetFunction)
-howToPlay.addEventListener('click', howToPlayFunction)
 
 function playGameFunction() {
-  window.alert('hi')
-  
+  newBlackKingNumber = (Math.floor((Math.random() * 8) + 38))
+  newPawnNum = (Math.floor((Math.random() * 8) + 98))
+  newRandomWhiteKingNum = (Math.floor((Math.random() * 8) + 110))
+  createBlackKing(newBlackKingNumber);
+  createKing(newRandomWhiteKingNum);
+  addPawnImg(newPawnNum);
+  for (let i = 0; i <= 144; i++) {
+    cells[i].classList.remove('blackKing')
+    cells[i].classList.remove('whitePawn')
+    cells[i].classList.remove('whiteKing')
+    cells[i].classList.remove('whiteQueen')
+    cells[i].classList.remove('pawnDropzone')
+    queenImg.remove();
+
+  }
+
   
 }
+
 
 function resetFunction() {
   window.alert('hi')
@@ -731,3 +819,6 @@ function resetFunction() {
 function howToPlayFunction() {
   window.alert('The goal of the game is to get the white pawn to the top of the board. Some postions are winnable but some are not. Can you find a way to best your opponent?')
 }
+
+
+
