@@ -8,24 +8,31 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  
 }
 
 .grid {
-  height: 600px;
-  width: 600px;
+  height: 700px;
+  width: 700px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2);
-  display: flex;
   flex-wrap: wrap;
+  
+  
 }
 
 .grid div {
-  height: 10%;
-  width: 10%;
+  height: 8.333333%;
+  width: 8.333333%;
   border: 1px solid black;
+  
 }
 
 .grid-wrapper {
   height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .grid .bordering {
@@ -33,9 +40,16 @@ body {
   color: white;
 }
 
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
 
 img {
-  width: 40px;
+  width: 56px;
+  height: 56px;
   cursor: pointer;
 }
 
@@ -46,4 +60,21 @@ img {
 .whiteKing {
   width: 40px;
   height: 40px;
+}
+
+.blackKing {
+  width: 50px;
+  height: 50px;
+}
+
+.buttons {
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+button {
+  display: flex;
+  justify-content: space-around;
+  margin: 10px;
 }
