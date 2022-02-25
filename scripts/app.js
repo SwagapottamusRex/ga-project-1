@@ -728,7 +728,6 @@ blackKing.addEventListener('dragend', function (event) {
     kissingKings.classList.add('kissingKings')
     kissingKings.classList.remove('reveal')
   }
-
 }, false);
 document.addEventListener('dragenter', function (event) {
   if (event.target.className === 'playingTile blackKingDropZone') {
