@@ -91,3 +91,23 @@ h1 {
   font-size: 14px;
   padding-bottom: 20px;
 }
+
+.applause {
+  display: none;
+}
+
+.kissingKings {
+  height: 200px;
+  width: 300px;
+  position: absolute;
+  right: 600px ;
+  visibility: hidden;
+}
+
+.reveal {
+  height: 200px;
+  width: 300px;
+  position: absolute;
+  right: 600px ;
+  visibility: visible;
+}

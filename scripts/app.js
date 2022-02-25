@@ -4,6 +4,7 @@ const playGame = document.getElementById('playGame')
 const reset = document.getElementById('reset')
 const howToPlay = document.getElementById('howToPlay')
 const evaluation = document.getElementById('evaluation')
+const kissingKings = document.querySelector('.kissingKings')
 playGame.addEventListener('click', playGameFunction)
 reset.addEventListener('click', resetFunction)
 howToPlay.addEventListener('click', howToPlayFunction)
@@ -183,6 +184,25 @@ const pawnImage = document.getElementById('whitePawns')
 const pawnPromotingSquaresArray = [] 
 let whereThatPawnBe
 
+//Create Audio
+const audioApplause = document.querySelector('.applause')
+const audioStalemate = document.querySelector('.omgstalemate')
+const audioDisappointed = document.querySelector('.disappointed')
+function playApplause () {
+  audioApplause.src = './sounds/applause.wav'
+  audioApplause.play();
+}
+function playStalemate () {
+  audioStalemate.src = './sounds/stalemate.wav'
+  audioStalemate.play();
+}
+function playDisappointed() {
+  audioDisappointed.src = './sounds/disappointed.wav'
+  audioDisappointed.play();
+}
+
+
+
 //Drag and Drop for White Pawn
 pawnImage.addEventListener('dragstart', function (event) {
   twoSquaresAhead = document.getElementById((parseInt(event.target.parentElement.id) - 24))
@@ -231,18 +251,21 @@ pawnImage.addEventListener('dragend', function (event) {
       event.target.style.border = ''
       dragged.parentNode.removeChild(dragged)
       thisWherePawnShouldBe.appendChild(queenImg)
+      playApplause();
       window.alert('White Wins!')
     } else if ((pawnPromotingSquaresArray.some(tileBlackKing) === true) && (pawnPromotingSquaresArray.some(tileWhiteKing) === false)) {
       event.target.parentElement.classList.add('whiteQueen')
       event.target.parentElement.classList.remove('whitePawn')
       dragged.parentNode.removeChild(dragged)
       thisWherePawnShouldBe.appendChild(queenImg)
+      playDisappointed()
       window.alert('Uh oh! White promoted without White King\'s help. Game is drawn.')
     } else if ((pawnPromotingSquaresArray.some(tileBlackKing) === false) && (pawnPromotingSquaresArray.some(tileWhiteKing) === false)) {
       event.target.parentElement.classList.add('whiteQueen')
       event.target.parentElement.classList.remove('whitePawn')
       dragged.parentNode.removeChild(dragged)
       thisWherePawnShouldBe.appendChild(queenImg)
+      playApplause();
       window.alert('White Wins')
     }
   } 
@@ -456,6 +479,18 @@ whiteKing.addEventListener('dragend', function(event) {
   newWhiteKingAvailableSquaresArray[5] = cells[newCurrentWhiteKingPosition + 11]
   newWhiteKingAvailableSquaresArray[6] = cells[newCurrentWhiteKingPosition - 1]
   newWhiteKingAvailableSquaresArray[7] = cells[newCurrentWhiteKingPosition - 13]
+
+  const tileBlackKing = element => element.classList.value === 'playingTile blackKing'
+  const tileWhiteKing = element => element.classList.value === 'playingTile whiteKing'
+
+  if (newKingPositionArray.some(tileWhiteKing) && newWhiteKingAvailableSquaresArray.some(tileBlackKing)) {
+    kissingKings.classList.remove('kissingKings')
+    kissingKings.classList.add('reveal')
+  } else {
+    kissingKings.classList.add('kissingKings')
+    kissingKings.classList.remove('reveal')
+  }
+  
   checkForStalemate()
 }, false);
 document.addEventListener('dragenter', function(event) {
@@ -498,6 +533,7 @@ createBlackKing(randomBlackKingNum);
 const blackKingAvailableSquaresArray = []
 let blackKing = document.getElementById('blackKing')
 let whereBlackKingEndsUp
+let blackKingDragged
 
 //Drag and Drop for Black King
 blackKing.addEventListener('dragstart', function (event) {
@@ -530,7 +566,6 @@ blackKing.addEventListener('dragstart', function (event) {
   const leftMidTop = parseInt(blackKingAvailableSquaresArray[7].id) - 1
   const topLeft = parseInt(blackKingAvailableSquaresArray[7].id) - 13
   const topMidLeft = parseInt(blackKingAvailableSquaresArray[7].id) - 12
-  console.log(rightMidTop)
   blackKingAvailableSquaresArray.forEach(element => {
     if (element.className === 'playingTile' || element.className === 'playingTile whitePawn') {
       element.style.opacity = .5;
@@ -622,6 +657,7 @@ blackKing.addEventListener('dragstart', function (event) {
   return currentBlackKingPosition
 }, false)
 const newKingPositionArray = []
+
 blackKing.addEventListener('dragend', function (event) {
   blackKingAvailableSquaresArray.forEach(element => {
     element.classList.remove('blackKingDropZone')
@@ -653,6 +689,8 @@ blackKing.addEventListener('dragend', function (event) {
             thisIsWhereBlackKingShouldBe.parentElement.appendChild(blackKingDragged.firstElementChild)
             pawnImage.remove()
             window.alert('Game is a draw!')
+            kissingKings.classList.add('kissingKings')
+            kissingKings.classList.remove('reveal')
           }
         }
       }
@@ -663,6 +701,7 @@ blackKing.addEventListener('dragend', function (event) {
     thisIsWhereBlackKingShouldBe.parentElement.style.border = ''
     thisIsWhereBlackKingShouldBe.parentElement.appendChild(blackKingDragged.firstElementChild)
     pawnImage.remove()
+    playDisappointed()
     window.alert('Game is a draw!')
   }
   if (parseInt(blackKing.parentElement.id) === parseInt(thisIsWhereKingShouldBe.parentElement.id)) {
@@ -675,6 +714,17 @@ blackKing.addEventListener('dragend', function (event) {
     pawnImage.draggable = true
   }
   whereBlackKingEndsUp = event.target.parentElement
+  const tileBlackKing = element => element.classList.value === 'playingTile blackKing'
+  const tileWhiteKing = element => element.classList.value === 'playingTile whiteKing'
+  
+  if (newKingPositionArray.some(tileWhiteKing) && newWhiteKingAvailableSquaresArray.some(tileBlackKing)) {
+    kissingKings.classList.remove('kissingKings')
+    kissingKings.classList.add('reveal')
+  } else {
+    kissingKings.classList.add('kissingKings')
+    kissingKings.classList.remove('reveal')
+  }
+
 }, false);
 document.addEventListener('dragenter', function (event) {
   if (event.target.className === 'playingTile blackKingDropZone') {
@@ -704,6 +754,8 @@ document.addEventListener('drop', function (event) {
 let didTheButtonGetHit = false
 //Create new position
 function playGameFunction() {
+  kissingKings.classList.add('kissingKings')
+  kissingKings.classList.remove('reveal')
   newBlackKingNumber = (Math.floor((Math.random() * 8) + 38))
   newPawnNum = (Math.floor((Math.random() * 8) + 98))
   newRandomWhiteKingNum = (Math.floor((Math.random() * 8) + 110))
@@ -722,10 +774,13 @@ function playGameFunction() {
     queenImg.remove();
     cells[i].style.opacity = ''
   }
+  
 }
 
 //Reset last starting position
 function resetFunction() {
+  kissingKings.classList.add('kissingKings')
+  kissingKings.classList.remove('reveal')
   if (didTheButtonGetHit === true) {
     createBlackKing(newBlackKingNumber);
     createKing(newRandomWhiteKingNum);
@@ -1085,60 +1140,71 @@ function checkForStalemate () {
       (parseInt(curWhiteKingPostion.parentElement.id) === 50 || parseInt(curWhiteKingPostion.parentElement.id) === 51)
     ){
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 33 &&
       parseInt(whereThatPawnBe.parentElement.id) === 45 &&
       (parseInt(curWhiteKingPostion.parentElement.id) === 57 || parseInt(curWhiteKingPostion.parentElement.id) === 56)
     ){
       window.alert(('Draw by Stalemate!'))
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 27 &&
       parseInt(whereThatPawnBe.parentElement.id) === 39 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 51
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 28 &&
       parseInt(whereThatPawnBe.parentElement.id) === 40 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 52
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 29 &&
       parseInt(whereThatPawnBe.parentElement.id) === 41 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 53
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 30 &&
       parseInt(whereThatPawnBe.parentElement.id) === 42 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 54
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 31 &&
       parseInt(whereThatPawnBe.parentElement.id) === 43 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 55
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 32 &&
       parseInt(whereThatPawnBe.parentElement.id) === 44 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 56
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 26 &&
       parseInt(whereThatPawnBe.parentElement.id) === 51 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 40
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     } else if (
       parseInt(whereBlackKingEndsUp.id) === 33 &&
       parseInt(whereThatPawnBe.parentElement.id) === 56 &&
       parseInt(curWhiteKingPostion.parentElement.id) === 43
     ) {
       window.alert('Draw by Stalemate!')
+      playStalemate()
     }
   }
 }
+
