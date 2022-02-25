@@ -188,6 +188,9 @@ let whereThatPawnBe
 const audioApplause = document.querySelector('.applause')
 const audioStalemate = document.querySelector('.omgstalemate')
 const audioDisappointed = document.querySelector('.disappointed')
+audioStalemate.volume = 0.2
+audioDisappointed.volume = 0.4
+audioApplause.volume = 0.5
 function playApplause () {
   audioApplause.src = './sounds/applause.wav'
   audioApplause.play();
@@ -688,6 +691,7 @@ blackKing.addEventListener('dragend', function (event) {
             thisIsWhereBlackKingShouldBe.parentElement.style.border = ''
             thisIsWhereBlackKingShouldBe.parentElement.appendChild(blackKingDragged.firstElementChild)
             pawnImage.remove()
+            playDisappointed()
             window.alert('Game is a draw!')
             kissingKings.classList.add('kissingKings')
             kissingKings.classList.remove('reveal')
@@ -1207,4 +1211,3 @@ function checkForStalemate () {
     }
   }
 }
-
