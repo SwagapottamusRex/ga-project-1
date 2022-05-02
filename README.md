@@ -9,7 +9,6 @@ Table of Contents:
 <li>Technologies Used</li>
 <li>Approach Taken</li>
 <li>Featured Code</li>
-<li>Screenshots</li>
 <li>Bugs</li>
 <li>Wins and Blockers</li>
 <li>Future Content and Improvements</li>
@@ -54,9 +53,11 @@ Key Dates:
 
 <hr>
 Day 1: 
+
 My initial idea was to create a full chess board with all the pieces. Unfortunately I realized very quickly the amount of logic it would take would be too much considering the deadline. Our project had to be based around a grid game. The games recommended all felt a little to simple and irrelevant to my interests. I quickly found that a basic king and pawn endgame would be complex enough to create a functional game.
 <hr>
 Day 2-4:
+
 My first tasks were to create functions to handle click, drag and drag end. These event listeners can be categorized into 5 events. 
 <br>
 <li>Drag Start</li>
