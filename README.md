@@ -24,7 +24,7 @@ Play my King and Pawn Endgame here (2 players needed):
 <br>
 https://swagapottamusrex.github.io/ga-project-1/
 <hr>
-<img src="../chessscreenshot.png" alt="drawing" width="400"/>
+<img src="./chessscreenshot.png" alt="drawing" width="400"/>
 
 
 ## Game Brief:
@@ -82,7 +82,7 @@ Creating the boundaries between the two Kings.
 
 Despite there being still some bugs. The two kings are not allowed to be less than one square away from each other. Upon the 'dragstart' functionality the code will look at the all the cells . The algorithm checks each potential square the white (or black) king can approach but if the resulting square would make both kings touch then I remove the 'drop zone' from the player's options.
 
-<img src="../kisskingsscreenshot.png" alt="drawing" width="500"/>
+<img src="./kisskingsscreenshot.png" alt="drawing" width="500"/>
 
     if (cells[topTop].classList.value === 'playingTile whiteKing') {
     blackKingAvailableSquaresArray[7].style.opacity = '1'
