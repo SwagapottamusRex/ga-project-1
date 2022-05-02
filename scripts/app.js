@@ -4,7 +4,6 @@ const playGame = document.getElementById('playGame')
 const reset = document.getElementById('reset')
 const howToPlay = document.getElementById('howToPlay')
 const evaluation = document.getElementById('evaluation')
-const kissingKings = document.querySelector('.kissingKings')
 playGame.addEventListener('click', playGameFunction)
 reset.addEventListener('click', resetFunction)
 howToPlay.addEventListener('click', howToPlayFunction)
@@ -486,13 +485,6 @@ whiteKing.addEventListener('dragend', function(event) {
   const tileBlackKing = element => element.classList.value === 'playingTile blackKing'
   const tileWhiteKing = element => element.classList.value === 'playingTile whiteKing'
 
-  if (newKingPositionArray.some(tileWhiteKing) && newWhiteKingAvailableSquaresArray.some(tileBlackKing)) {
-    kissingKings.classList.remove('kissingKings')
-    kissingKings.classList.add('reveal')
-  } else {
-    kissingKings.classList.add('kissingKings')
-    kissingKings.classList.remove('reveal')
-  }
   
   checkForStalemate()
 }, false);
@@ -693,8 +685,7 @@ blackKing.addEventListener('dragend', function (event) {
             pawnImage.remove()
             playDisappointed()
             window.alert('Game is a draw!')
-            kissingKings.classList.add('kissingKings')
-            kissingKings.classList.remove('reveal')
+           
           }
         }
       }
@@ -721,13 +712,7 @@ blackKing.addEventListener('dragend', function (event) {
   const tileBlackKing = element => element.classList.value === 'playingTile blackKing'
   const tileWhiteKing = element => element.classList.value === 'playingTile whiteKing'
   
-  if (newKingPositionArray.some(tileWhiteKing) && newWhiteKingAvailableSquaresArray.some(tileBlackKing)) {
-    kissingKings.classList.remove('kissingKings')
-    kissingKings.classList.add('reveal')
-  } else {
-    kissingKings.classList.add('kissingKings')
-    kissingKings.classList.remove('reveal')
-  }
+  
 }, false);
 document.addEventListener('dragenter', function (event) {
   if (event.target.className === 'playingTile blackKingDropZone') {
@@ -757,8 +742,7 @@ document.addEventListener('drop', function (event) {
 let didTheButtonGetHit = false
 //Create new position
 function playGameFunction() {
-  kissingKings.classList.add('kissingKings')
-  kissingKings.classList.remove('reveal')
+ 
   newBlackKingNumber = (Math.floor((Math.random() * 8) + 38))
   newPawnNum = (Math.floor((Math.random() * 8) + 98))
   newRandomWhiteKingNum = (Math.floor((Math.random() * 8) + 110))
@@ -782,8 +766,7 @@ function playGameFunction() {
 
 //Reset last starting position
 function resetFunction() {
-  kissingKings.classList.add('kissingKings')
-  kissingKings.classList.remove('reveal')
+
   if (didTheButtonGetHit === true) {
     createBlackKing(newBlackKingNumber);
     createKing(newRandomWhiteKingNum);

@@ -96,13 +96,7 @@ h1 {
   display: none;
 }
 
-.kissingKings {
-  height: 200px;
-  width: 300px;
-  position: absolute;
-  right: 600px ;
-  visibility: hidden;
-}
+
 
 .reveal {
   height: 200px;
