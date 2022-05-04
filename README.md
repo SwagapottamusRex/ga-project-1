@@ -1,5 +1,5 @@
 # Project One - King and Pawn Endgames
-Team size: 1 (myself)
+Team size: Alone
 https://swagapottamusrex.github.io/ga-project-1/
 
 Table of Contents:
