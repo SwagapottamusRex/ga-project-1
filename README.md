@@ -15,7 +15,7 @@ Table of Contents:
 <li>Key Learnings</li>
 
 ## Project Overview
-King and pawn endgames are notoriously tricky, even Grandmasters struggle to convert winning positions. With the help of chess engines we are now able to solve chess (find the perfect moves) as long as there are 7 or fewer pieces on the board. 
+King and pawn endgames are notoriously tricky, even Grandmasters struggle to convert winning positions. With the help of chess engines, we are now able to solve chess (find the perfect moves) as long as there are 7 or fewer pieces on the board. 
 
 This was my first project from General Assembly's Software Engineering Immersive course. It was an individual project built in 9 days. Not 3 weeks before I had not even seen a Javascript file.
 
@@ -75,13 +75,13 @@ On day 5 I started adding other key features such as checking for stalemate and 
 <hr>
 Day 8-9:
 
-During the final days I worked on design and adding sound effects for when you successfully queen your pawn. The winning conditions were also added. The game would end when a stalemate occurs, when you queen your pawn (without stalemating) or when black manages to capture whites pawn.
+During the final days, I worked on design and adding sound effects for when you successfully queen your pawn. The winning conditions were also added. The game would end when a stalemate occurs, when you queen your pawn (without stalemating) or when black manages to capture whites pawn.
 
 
 ## Featured Code:
 Creating the boundaries between the two Kings.
 
-Despite there being still some bugs. The two kings are not allowed to be less than one square away from each other. Upon the 'dragstart' functionality the code will look at all the cells. The algorithm checks each potential square the white (or black) king can approach but if the resulting square would make both kings touch then I remove the 'drop zone' from the player's options.
+Despite there being still some bugs, the two kings are not allowed to be less than one square away from each other. Upon the 'dragstart' functionality the code will look at all the cells. The algorithm checks each potential square the white (or black) king can approach but if the resulting square would make both kings touch then I remove the 'drop zone' from the player's options.
 
 <img src="./kisskingsscreenshot.png" alt="drawing" width="500"/>
 
